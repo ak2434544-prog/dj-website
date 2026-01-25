@@ -10,11 +10,9 @@
 
   <style>
     :root{
-      /* RED + BLACK SCHEME */
       --accent:#ff1a1a;
       --accent2:#b30000;
       --bg:#050505;
-      --glass:rgba(255,255,255,.08);
     }
 
     *{margin:0;padding:0;box-sizing:border-box}
@@ -26,189 +24,181 @@
                  var(--bg);
       color:#fff;
       overflow-x:hidden;
+      opacity:0;
+      animation:pageIn .8s ease forwards;
     }
+    @keyframes pageIn{to{opacity:1}}
 
-    /* Cursor */
-    .cursor{width:18px;height:18px;border:2px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;transform:translate(-50%,-50%);z-index:999;transition:.08s ease}
-
-    /* Particles */
     canvas#stars{position:fixed;inset:0;z-index:0}
 
-    /* Nav */
-    nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 6%;backdrop-filter:blur(10px);background:linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.15))}
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:50;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:18px 6%;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      background:linear-gradient(to bottom, rgba(0,0,0,.8), rgba(0,0,0,.2));
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
     nav .logo{font-weight:900;letter-spacing:2px}
     nav a{color:#ddd;text-decoration:none;margin-left:22px;font-weight:500}
     nav a:hover{color:#fff}
 
-    /* Hero */
-    header{height:100vh;position:relative;display:grid;place-items:center;overflow:hidden}
-    .hero{position:relative;z-index:2;text-align:center}
+    header{height:100vh;display:grid;place-items:center;position:relative;overflow:hidden}
+    .hero{text-align:center;z-index:2}
+
     .hero h1{
       font-size:clamp(3rem,8vw,6.5rem);
       font-weight:900;
       letter-spacing:4px;
-      background:linear-gradient(90deg,#fff,var(--accent),var(--accent2));
+      background:linear-gradient(90deg,#fff,var(--accent),var(--accent2),#fff);
+      background-size:300% 100%;
       -webkit-background-clip:text;
       -webkit-text-fill-color:transparent;
       position:relative;
-      cursor:pointer;
       overflow:hidden;
+      cursor:pointer;
+      animation:nameFlow 8s ease-in-out infinite;
     }
 
-    /* LEFT → RIGHT SWEEP EFFECT */
+    @keyframes nameFlow{
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+    }
+
     .hero h1::before{
       content:"";
-      position:absolute;
-      top:0;
-      left:-100%;
-      width:100%;
-      height:100%;
+      position:absolute;top:0;left:-100%;width:100%;height:100%;
       background:linear-gradient(120deg, transparent, rgba(255,26,26,.6), transparent);
       transition:left .6s ease;
     }
+    .hero h1:hover::before{left:100%}
 
-    .hero h1:hover::before{
-      left:100%;
-    }
     .hero span{display:block;font-size:1.2rem;letter-spacing:3px;color:#bbb;margin-top:6px}
-    .typing{margin-top:18px;font-size:1.15rem;opacity:.95}
+    .typing{margin-top:18px;font-size:1.15rem}
 
-    .scroll-indicator{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);opacity:.7}
-    .scroll-indicator::after{content:"";display:block;width:2px;height:34px;background:#fff;margin:10px auto;animation:scroll 1.6s infinite}
-    @keyframes scroll{0%{opacity:0;transform:translateY(0)}50%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+    section{
+      padding:120px 8%;
+      opacity:0;
+      transform:translateY(40px) scale(.98);
+      filter:blur(6px);
+      transition:opacity .8s ease, transform .8s ease, filter .8s ease;
+      position:relative;z-index:2;
+    }
+    section.show{opacity:1;transform:none;filter:blur(0)}
+    section.show{opacity:1;transform:none}
 
-    /* Sections */
-    section{position:relative;z-index:2;padding:120px 8%}
     h2{font-size:clamp(2.1rem,4vw,3rem);margin-bottom:22px;background:linear-gradient(90deg,var(--accent),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
     .glass{
       background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.02));
-      border:1px solid rgba(255,255,255,.15);
+      border:1px solid rgba(255,255,255,.18);
       border-radius:24px;
-      backdrop-filter:blur(12px);
-      position:relative;
-      overflow:hidden;
-      transition:transform .4s ease, box-shadow .4s ease, border-color .4s ease;
-    }
-
-    /* LEFT TO RIGHT SWEEP FOR GLASS SECTIONS */
-    .glass::before{
-      content:"";
-      position:absolute;
-      top:0;
-      left:-120%;
-      width:120%;
-      height:100%;
-      background:linear-gradient(120deg, transparent, rgba(255,26,26,.35), transparent);
-      transition:left .7s ease;
-    }
-
-    .glass:hover::before{
-      left:120%;
-    }
-
-    .glass:hover{
-      transform:translateY(-10px);
-      box-shadow:0 25px 60px rgba(255,26,26,.25);
-      border-color:rgba(255,26,26,.6);
-    }
-
-    /* About */
-    .about{display:grid;grid-template-columns:1.2fr .8fr;gap:36px}
-    .about p{line-height:1.9;color:#d6d6d6}
-
-    /* Lists */
-    ul.clean{list-style:none}
-    ul.clean li{margin:10px 0;color:#ddd}
-
-    /* Interests grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
-    .chip{
-      padding:18px 20px;
-      border-radius:16px;
-      background:#0f0f0f;
-      border:1px solid rgba(255,255,255,.12);
-      position:relative;
-      overflow:hidden;
-      cursor:pointer;
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      padding:36px;
+      position:relative;overflow:hidden;
+      box-shadow:0 10px 30px rgba(0,0,0,.35);
       transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
     }
+    .glass:hover{
+      transform:translateY(-6px);
+      box-shadow:0 20px 50px rgba(255,26,26,.18);
+      border-color:rgba(255,26,26,.5);
+    }
 
-    .chip::before{
-      content:"";
+    .clock-wrap{position:relative;display:grid;place-items:center}
+    .clock-bg{
       position:absolute;
-      inset:0;
-      background:linear-gradient(120deg, transparent, rgba(255,26,26,.35), transparent);
-      transform:translateX(-100%);
+      font-size:clamp(6rem,20vw,14rem);
+      font-weight:900;
+      letter-spacing:8px;
+      color:rgba(255,255,255,.08);
+      pointer-events:none;
+      user-select:none;
     }
-
-    .chip:hover::before{
-      transform:translateX(100%);
-      transition:1s;
-    }
-
-    .chip:hover{
-      transform:translateY(-8px) scale(1.05);
-      box-shadow:0 15px 40px rgba(255,26,26,.25);
-      border-color:rgba(255,26,26,.6);
-    }
-
-    .chip:active{
-      transform:scale(0.98);
-    }
-
-    /* Quote */
-    .quote{
-      font-size:1.3rem;
-      font-weight:600;
-      text-align:center;
-      position:relative;
-      cursor:pointer;
-    }
-
-    /* QUOTE AFTER EFFECT */
-    .quote::after{
-      content:"";
-      position:absolute;
-      left:50%;
-      bottom:-12px;
-      width:0;
-      height:3px;
+    .clock-text{
+      font-size:clamp(2.8rem,6vw,4rem);
+      font-weight:900;
+      letter-spacing:6px;
       background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));
-      transform:translateX(-50%);
-      transition:width .4s ease;
-      border-radius:3px;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+    .clock-caption{margin-top:12px;color:#aaa;text-align:center}
+
+    footer{
+      text-align:center;
+      padding:56px 8%;
+      color:#777;
+      background:linear-gradient(to top, rgba(0,0,0,.9), rgba(0,0,0,.6));
+      border-top:1px solid rgba(255,255,255,.06);
     }
 
-    .quote:hover::after{
-      width:60%;
+    /* DATE TEXT */
+    .date-text{
+      text-align:center;
+      font-size:clamp(1.4rem,2.8vw,1.9rem); /* slightly bigger */
+      font-weight:700;
+      letter-spacing:4px;
+      color:var(--accent);
+      opacity:.95;
+      animation:datePulse 3s ease-in-out infinite alternate;
     }
-    .quote span{color:var(--accent)}
 
-    /* Socials */
-    .socials{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
-    .socials a{padding:14px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-weight:600;background:linear-gradient(90deg, rgba(255,26,26,.35), rgba(179,0,0,.35))}
-    .socials a:hover{transform:scale(1.06)}
+    @keyframes datePulse{
+      from{opacity:.7}
+      to{opacity:1}
+    }
 
-    footer{text-align:center;padding:46px;color:#777;background:#000}
+    /* YEAR PROGRESS */
+    .year-progress{
+      margin-top:28px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+    }
 
-    @media(max-width:900px){.about{grid-template-columns:1fr}}
+    .year-progress-bar{
+      width:min(420px,80%);
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.12);
+      overflow:hidden;
+      backdrop-filter:blur(6px);
+    }
+
+    .year-progress-bar span{
+      display:block;
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--accent),#ff4d4d,var(--accent2));
+      border-radius:999px;
+      animation:progressFill 1.6s ease forwards;
+    }
+
+    .year-progress-text{
+      font-size:.9rem;
+      letter-spacing:2px;
+      color:#bbb;
+    }
+
+    @keyframes progressFill{
+      from{width:0%}
+      to{width:var(--year-progress)}
+    }
+      to{opacity:1}
+    }
   </style>
 </head>
 <body>
 
 <canvas id="stars"></canvas>
-<div class="cursor"></div>
 
 <nav>
   <div class="logo">DJ</div>
-  <div>
-    <a href="#about">About</a>
-    <a href="#interests">Interests</a>
-    <a href="#hobbies">Hobbies</a>
-    <a href="#quote">Quote</a>
-    <a href="#links">Links</a>
-  </div>
 </nav>
 
 <header>
@@ -217,97 +207,108 @@
     <span>aka DJ</span>
     <div class="typing" id="typing"></div>
   </div>
-  <div class="scroll-indicator"></div>
 </header>
 
+<section id="date" class="show">
+  <div class="date-text" id="date-text">-- -- ----</div>
+
+  <!-- YEAR PROGRESS BAR -->
+  <div class="year-progress">
+    <div class="year-progress-bar">
+      <span id="year-progress-fill"></span>
+    </div>
+    <div class="year-progress-text" id="year-progress-text"></div>
+  </div>
+</section>
+
+<section id="clock" class="show">
+  <div class="clock-wrap">
+    <div class="clock-bg" id="clock-bg">00:00:00</div>
+    <div class="glass">
+      <h2>Now</h2>
+      <div class="clock-text" id="clock-text">00:00:00</div>
+      <p class="clock-caption">Living in the present, building the future.</p>
+    </div>
+  </div>
+  <div class="year-progress">
+    <div class="year-progress-bar">
+      <span id="year-progress-fill"></span>
+    </div>
+    <div class="year-progress-text" id="year-progress-text"></div>
+  </div>
+</section>
+
 <section id="about">
-  <div class="about">
-    <div class="glass" style="padding:36px">
-      <h2>About Me</h2>
-      <p>
-        I am a <b>17-year-old</b> student from <b>Kolkata</b>, currently living in <b>Delhi</b>.
-        I’m curious by nature and enjoy learning about technology, machines, and how things work.
-      </p>
-    </div>
-    <div class="glass" style="padding:36px">
-      <h2>Quick Info</h2>
-      <ul class="clean">
-        <li><b>Name:</b> Dibyojyoti Kundu (DJ)</li>
-        <li><b>Location:</b> Delhi, India</li>
-        <li><b>Age:</b> 17</li>
-      </ul>
-    </div>
+  <div class="glass">
+    <h2>About Me</h2>
+    <p>I am a 17-year-old student from Kolkata, currently living in Delhi. I enjoy learning technology, aviation, and motorsports.</p>
   </div>
 </section>
 
-<section id="interests">
-  <h2>Interests</h2>
-  <div class="grid">
-    <div class="chip">Formula 1</div>
-    <div class="chip">Aviation</div>
-    <div class="chip">Sports</div>
-    <div class="chip">Computers & Technology</div>
-  </div>
-</section>
-
-<section id="hobbies">
-  <h2>Hobbies</h2>
-  <div class="grid">
-    <div class="chip">Playing Sports</div>
-    <div class="chip">Meeting New People</div>
-    <div class="chip">Travel & Explore</div>
-    <div class="chip">Adventure</div>
-  </div>
-</section>
-
-<section>
-  <h2>Favourite Movies</h2>
-  <div class="grid">
-    <div class="chip">Avengers</div>
-    <div class="chip">James Bond</div>
-    <div class="chip">The Uncharted</div>
-    <div class="chip">IT</div>
-    <div class="chip">Mission Impossible</div>
-  </div>
-</section>
-
-<section id="quote">
-  <div class="glass" style="padding:42px">
-    <p class="quote">“ <span>Life is already hard, don’t make it harder.</span> ”</p>
-  </div>
-</section>
-
-<section id="links">
-  <h2>Find Me Online</h2>
-  <div class="socials">
-    <a href="https://instagram.com/thenameisdibyojyoti" target="_blank">Instagram</a>
-    <a href="https://discord.gg/qPsTsnwsYj" target="_blank">Discord</a>
-  </div>
-</section>
-
-<footer>© 2026 Dibyojyoti Kundu • Personal Website</footer>
+<footer>© 2026 Dibyojyoti Kundu</footer>
 
 <script>
-  /* Cursor */
-  const cursor=document.querySelector('.cursor');
-  window.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
+  // Typing effect
+  const words=['Student • Curious • Growing','F1 • Aviation • Sports','Learning • Exploring • Improving'];
+  let wi=0,ci=0,del=false;
+  const typingEl=document.getElementById('typing');
+  setInterval(()=>{
+    typingEl.textContent=words[wi].slice(0,ci);
+    if(!del && ci++===words[wi].length+8) del=true;
+    if(del && ci--===0){del=false;wi=(wi+1)%words.length}
+  },90);
 
-  /* Typing */
-  const words=[
-    'Student • Curious • Growing',
-    'F1 • Aviation • Sports',
-    'Learning • Exploring • Improving'
-  ];
-  let i=0,j=0,del=false;const el=document.getElementById('typing');
-  setInterval(()=>{el.textContent=words[i].slice(0,j);if(!del && j++===words[i].length+8) del=true;if(del && j--===0){del=false;i=(i+1)%words.length}},90);
+  // Stars
+  const canvas=document.getElementById('stars');
+  const ctx=canvas.getContext('2d');
+  let w,h,stars=[];
+  function resize(){w=canvas.width=innerWidth;h=canvas.height=innerHeight}
+  addEventListener('resize',resize);resize();
+  for(let i=0;i<120;i++)stars.push({x:Math.random()*w,y:Math.random()*h,z:Math.random()});
+  (function draw(){ctx.clearRect(0,0,w,h);stars.forEach(s=>{ctx.globalAlpha=s.z;ctx.fillStyle='#fff';ctx.fillRect(s.x,s.y,2,2);s.y+=.3;if(s.y>h)s.y=0});requestAnimationFrame(draw)})();
 
-  /* Stars */
-  const c=document.getElementById('stars'),ctx=c.getContext('2d');let w,h,stars=[];
-  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
-  window.addEventListener('resize',resize);resize();
-  for(let i=0;i<120;i++)stars.push({x:Math.random()*w,y:Math.random()*h,z:Math.random()*1.2});
-  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';stars.forEach(s=>{ctx.globalAlpha=s.z;ctx.fillRect(s.x,s.y,2,2);s.y+=.25;if(s.y>h)s.y=0});requestAnimationFrame(draw)}
-  draw();
+  // Scroll reveal
+  const sections=document.querySelectorAll('section');
+  const reveal=()=>{sections.forEach(s=>{if(s.getBoundingClientRect().top<innerHeight*.85)s.classList.add('show')})};
+  addEventListener('scroll',reveal);reveal();
+
+  // CLOCK (single source of truth)
+  const clockText=document.getElementById('clock-text');
+  const clockBg=document.getElementById('clock-bg');
+  function updateClock(){
+    const n=new Date();
+    const t=[n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,'0')).join(':');
+    clockText.textContent=t;
+    clockBg.textContent=t;
+  }
+  setInterval(updateClock,1000);
+  updateClock();
+
+  /* DATE */
+  const dateEl=document.getElementById('date-text');
+  if(dateEl){
+    const now=new Date();
+    const options={day:'2-digit',month:'long',year:'numeric'};
+    dateEl.textContent=now.toLocaleDateString('en-IN',options).toUpperCase();
+  }
+
+  /* YEAR PROGRESS */
+  const fill=document.getElementById('year-progress-fill');
+  const text=document.getElementById('year-progress-text');
+
+  if(fill && text){
+    const now=new Date();
+    const start=new Date(now.getFullYear(),0,1);
+    const end=new Date(now.getFullYear()+1,0,1);
+
+    const progress=((now-start)/(end-start))*100;
+    const remaining=100-progress;
+
+    fill.style.setProperty('--year-progress',progress.toFixed(2)+'%');
+    fill.style.width=progress.toFixed(2)+'%';
+
+    text.textContent=`${remaining.toFixed(1)}% of the year remaining`;
+  }
 </script>
 
 </body>
