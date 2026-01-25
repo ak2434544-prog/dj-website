@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dibyojyoti Kundu (DJ) | About Me</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      /* RED + BLACK SCHEME */
+      --accent:#ff1a1a;
+      --accent2:#b30000;
+      --bg:#050505;
+      --glass:rgba(255,255,255,.08);
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box}
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:radial-gradient(1200px 800px at 10% -10%, rgba(255,26,26,.15), transparent 40%),
+                 radial-gradient(900px 600px at 90% 10%, rgba(179,0,0,.18), transparent 45%),
+                 var(--bg);
+      color:#fff;
+      overflow-x:hidden;
+    }
+
+    /* Cursor */
+    .cursor{width:18px;height:18px;border:2px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;transform:translate(-50%,-50%);z-index:999;transition:.08s ease}
+
+    /* Particles */
+    canvas#stars{position:fixed;inset:0;z-index:0}
+
+    /* Nav */
+    nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:18px 6%;backdrop-filter:blur(10px);background:linear-gradient(to bottom, rgba(0,0,0,.7), rgba(0,0,0,.15))}
+    nav .logo{font-weight:900;letter-spacing:2px}
+    nav a{color:#ddd;text-decoration:none;margin-left:22px;font-weight:500}
+    nav a:hover{color:#fff}
+
+    /* Hero */
+    header{height:100vh;position:relative;display:grid;place-items:center;overflow:hidden}
+    .hero{position:relative;z-index:2;text-align:center}
+    .hero h1{font-size:clamp(3rem,8vw,6.5rem);font-weight:900;letter-spacing:4px;background:linear-gradient(90deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero span{display:block;font-size:1.2rem;letter-spacing:3px;color:#bbb;margin-top:6px}
+    .typing{margin-top:18px;font-size:1.15rem;opacity:.95}
+
+    .scroll-indicator{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);opacity:.7}
+    .scroll-indicator::after{content:"";display:block;width:2px;height:34px;background:#fff;margin:10px auto;animation:scroll 1.6s infinite}
+    @keyframes scroll{0%{opacity:0;transform:translateY(0)}50%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
+
+    /* Sections */
+    section{position:relative;z-index:2;padding:120px 8%}
+    h2{font-size:clamp(2.1rem,4vw,3rem);margin-bottom:22px;background:linear-gradient(90deg,var(--accent),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+
+    .glass{background:linear-gradient(180deg, rgba(255,255,255,.14), rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.15);border-radius:24px;backdrop-filter:blur(12px)}
+
+    /* About */
+    .about{display:grid;grid-template-columns:1.2fr .8fr;gap:36px}
+    .about p{line-height:1.9;color:#d6d6d6}
+
+    /* Lists */
+    ul.clean{list-style:none}
+    ul.clean li{margin:10px 0;color:#ddd}
+
+    /* Interests grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px}
+    .chip{
+      padding:18px 20px;
+      border-radius:16px;
+      background:#0f0f0f;
+      border:1px solid rgba(255,255,255,.12);
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+      transition:transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+
+    .chip::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(120deg, transparent, rgba(255,26,26,.35), transparent);
+      transform:translateX(-100%);
+    }
+
+    .chip:hover::before{
+      transform:translateX(100%);
+      transition:1s;
+    }
+
+    .chip:hover{
+      transform:translateY(-8px) scale(1.05);
+      box-shadow:0 15px 40px rgba(255,26,26,.25);
+      border-color:rgba(255,26,26,.6);
+    }
+
+    .chip:active{
+      transform:scale(0.98);
+    }
+
+    /* Quote */
+    .quote{font-size:1.3rem;font-weight:600;text-align:center}
+    .quote span{color:var(--accent)}
+
+    /* Socials */
+    .socials{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+    .socials a{padding:14px 22px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:#fff;text-decoration:none;font-weight:600;background:linear-gradient(90deg, rgba(255,26,26,.35), rgba(179,0,0,.35))}
+    .socials a:hover{transform:scale(1.06)}
+
+    footer{text-align:center;padding:46px;color:#777;background:#000}
+
+    @media(max-width:900px){.about{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+<div class="cursor"></div>
+
+<nav>
+  <div class="logo">DJ</div>
+  <div>
+    <a href="#about">About</a>
+    <a href="#interests">Interests</a>
+    <a href="#hobbies">Hobbies</a>
+    <a href="#quote">Quote</a>
+    <a href="#links">Links</a>
+  </div>
+</nav>
+
+<header>
+  <div class="hero">
+    <h1>DIBYOJYOTI KUNDU</h1>
+    <span>aka DJ</span>
+    <div class="typing" id="typing"></div>
+  </div>
+  <div class="scroll-indicator"></div>
+</header>
+
+<section id="about">
+  <div class="about">
+    <div class="glass" style="padding:36px">
+      <h2>About Me</h2>
+      <p>
+        I am a <b>17-year-old</b> student from <b>Kolkata</b>, currently living in <b>Delhi</b>.
+        I’m curious by nature and enjoy learning about technology, machines, and how things work.
+      </p>
+    </div>
+    <div class="glass" style="padding:36px">
+      <h2>Quick Info</h2>
+      <ul class="clean">
+        <li><b>Name:</b> Dibyojyoti Kundu (DJ)</li>
+        <li><b>Location:</b> Delhi, India</li>
+        <li><b>Age:</b> 17</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="interests">
+  <h2>Interests</h2>
+  <div class="grid">
+    <div class="chip">Formula 1</div>
+    <div class="chip">Aviation</div>
+    <div class="chip">Sports</div>
+    <div class="chip">Computers & Technology</div>
+  </div>
+</section>
+
+<section id="hobbies">
+  <h2>Hobbies</h2>
+  <div class="grid">
+    <div class="chip">Playing Sports</div>
+    <div class="chip">Meeting New People</div>
+    <div class="chip">Travel & Explore</div>
+    <div class="chip">Adventure</div>
+  </div>
+</section>
+
+<section>
+  <h2>Favourite Movies</h2>
+  <div class="grid">
+    <div class="chip">Avengers</div>
+    <div class="chip">James Bond</div>
+    <div class="chip">The Uncharted</div>
+    <div class="chip">IT</div>
+    <div class="chip">Mission Impossible</div>
+  </div>
+</section>
+
+<section id="quote">
+  <div class="glass" style="padding:42px">
+    <p class="quote">“ <span>Life is already hard, don’t make it harder.</span> ”</p>
+  </div>
+</section>
+
+<section id="links">
+  <h2>Find Me Online</h2>
+  <div class="socials">
+    <a href="https://instagram.com/thenameisdibyojyoti" target="_blank">Instagram</a>
+    <a href="https://discord.gg/qPsTsnwsYj" target="_blank">Discord</a>
+  </div>
+</section>
+
+<footer>© 2026 Dibyojyoti Kundu • Personal Website</footer>
+
+<script>
+  /* Cursor */
+  const cursor=document.querySelector('.cursor');
+  window.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px'});
+
+  /* Typing */
+  const words=[
+    'Student • Curious • Growing',
+    'F1 • Aviation • Sports',
+    'Learning • Exploring • Improving'
+  ];
+  let i=0,j=0,del=false;const el=document.getElementById('typing');
+  setInterval(()=>{el.textContent=words[i].slice(0,j);if(!del && j++===words[i].length+8) del=true;if(del && j--===0){del=false;i=(i+1)%words.length}},90);
+
+  /* Stars */
+  const c=document.getElementById('stars'),ctx=c.getContext('2d');let w,h,stars=[];
+  function resize(){w=c.width=window.innerWidth;h=c.height=window.innerHeight}
+  window.addEventListener('resize',resize);resize();
+  for(let i=0;i<120;i++)stars.push({x:Math.random()*w,y:Math.random()*h,z:Math.random()*1.2});
+  function draw(){ctx.clearRect(0,0,w,h);ctx.fillStyle='#fff';stars.forEach(s=>{ctx.globalAlpha=s.z;ctx.fillRect(s.x,s.y,2,2);s.y+=.25;if(s.y>h)s.y=0});requestAnimationFrame(draw)}
+  draw();
+</script>
+
+</body>
+</html>
